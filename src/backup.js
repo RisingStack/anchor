@@ -6,11 +6,12 @@ const transform = require('./transform')
 const chart = require('./chart')
 
 function backup ({
+  overwrite = false,
   outputPath,
   name,
   description,
   version,
-  namespace,
+  namespace = 'default',
   resources
 }) {
   const getAndTransformResources = resources.map((resource) =>
@@ -35,7 +36,7 @@ function backup ({
   )
 
   return Promise.all(getAndTransformResources)
-    .then((chartResources) => chart.init(outputPath, { name, description, version })
+    .then((chartResources) => chart.init({ overwrite, outputPath, name, description, version })
       .then(() => chartResources)
     )
     .then((chartResources) => {

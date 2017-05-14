@@ -3,6 +3,7 @@
 const helmBackup = require('../src')
 
 helmBackup.backup({
+  overwrite: true,
   name: 'my-chart',
   description: 'Backup of my-chart',
   version: '1.0.0',

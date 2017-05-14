@@ -5,43 +5,69 @@ Detect and separates configurable values from templates.
 
 ## How to use it?
 
-**Requirements**
+### Requirements
 
-- Node.js
+- Node.js, `>= v6`
 - kubectl
 
 ```sh
 npm install @risingstack/helm-backup
 ```
 
+### Example
+
+For more detailed examples check out `./example` folder.
+
 ```js
 const helmBackup = require('@risingstack/helm-backup')
 
 helmBackup.backup({
-  name: 'my-chart',
-  description: 'Backup of my-chart',
-  version: '1.0.0',
-  namespace: 'staging',
   resources: [
-    'deployment/access-web',
-    'deployment/security-worker'
+    'deployment/my-app',
+    'deployment/my-worker'
   ]
 })
   .then(() => console.log('Backup finished'))
   .catch((err) => console.error('Backup error', err))
 ```
 
-Check out `./output` folder.
+### API
+
+#### helmBackup.backup(options)
+
+Backup Kubernetes resources as a Helm chart and returns a `Promise`.
+
+- `options.overwrite`: overwrite output directory
+  - optional
+  - default: `false`
+- `options.outputPath`: defines chart path, throws error when exist but overwrite is `false`
+  - optional
+  - default: `./output`
+- `options.name`: name of the Helm chart
+  - optional
+  - default: `my-chart`
+- `options.description`: description of the Helm chart
+  - optional
+  - default: `''`
+- `options.version`: version of the Helm chart
+  - optional
+  - default: `0.0.1`
+- `options.namespace`: Kubernetes namespace for `kubectl`
+  - optional
+  - default: `default`
+- `resources`: Kubernetes resources to backup
+  - required
+  - example: `['deployment/my-app', 'deployment/my-worker']`
 
 ## How does it work?
 
-1. Download Kubernetes resource
-2. Parse resource and transform to templates
+1. Download Kubernetes resource via `kubectl`
+2. Parse resource, extract values and transform to template
 3. Outputs a Helm chart: YAML templates and `values.yaml`
 
 ## What can it extract as a template?
 
-- Containers with name
+- Containers with name or single container
 - Container environment variables with value
 - Container image with tag
 - Deployment replicas

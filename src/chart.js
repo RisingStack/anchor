@@ -7,9 +7,11 @@ const { toYAML } = require('./yaml')
 
 const DEFAULT_OUTPUT_PATH = path.join(__dirname, '../output')
 
-function init (outputPath = DEFAULT_OUTPUT_PATH, {
+function init ({
+  overwrite = false,
+  outputPath = DEFAULT_OUTPUT_PATH,
   name = 'my-chart',
-  description = 'Backup',
+  description = '',
   version = '0.1.0'
 }) {
   const outputTemplatePath = path.join(outputPath, 'templates')
@@ -22,8 +24,10 @@ function init (outputPath = DEFAULT_OUTPUT_PATH, {
   }
 
   // Recreate folder
-  rimraf.sync(outputPath)
-  fs.mkdirSync(outputPath)
+  if (overwrite) {
+    rimraf.sync(outputPath)
+    fs.mkdirSync(outputPath)
+  }
   fs.mkdirSync(outputTemplatePath)
 
   return saveToYAMLFile(filePath, chart)
