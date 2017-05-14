@@ -3,4 +3,4 @@
 Creates Helm chart from running Kubernetes resources.
 Separates values from templates.
 
-Future idea: version, reload etc snapshots
+Future idea: versioning, snapshot reload, auto-sync.
