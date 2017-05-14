@@ -25,6 +25,8 @@ helmBackup.backup.deployment(NAMESPACE, DEPLOYMENT)
   .catch((err) => console.error('Backup error', err))
 ```
 
+Check out `./output` folder.
+
 ## How does it work?
 
 1. Download Kubernetes resource
