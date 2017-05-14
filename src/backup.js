@@ -3,7 +3,7 @@
 const path = require('path')
 const fs = require('fs')
 const rimraf = require('rimraf')
-const convert = require('./convert')
+const transform = require('./transform')
 const kubernetes = require('./kubernetes')
 const { toYAML } = require('./yaml')
 
@@ -37,7 +37,7 @@ function backupDeployment (namespace, deployment) {
 
   return kubernetes.getDeployment(namespace, deployment)
     .then((data) => {
-      const output = convert.toChart([convert.pod, convert.deployment], data)
+      const output = transform.toChart([transform.pod, transform.deployment], data)
       return Promise.resolve(output)
     })
     .then(({ values, chart }) => Promise.all([

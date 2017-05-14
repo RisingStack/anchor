@@ -7,5 +7,5 @@ const utils = require('./utils')
 module.exports = {
   deployment,
   pod,
-  toChart: utils.convertToChart
+  toChart: utils.transformToChart
 }

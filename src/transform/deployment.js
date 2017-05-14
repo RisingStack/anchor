@@ -1,6 +1,6 @@
 'use strict'
 
-function convert (inputValues, inputChart) {
+function transform (inputValues, inputChart) {
   const values = Object.assign({}, inputValues)
   const chart = Object.assign({}, inputChart)
 
@@ -20,4 +20,4 @@ function convert (inputValues, inputChart) {
   }
 }
 
-module.exports = convert
+module.exports = transform
