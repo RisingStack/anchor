@@ -1,13 +1,18 @@
 'use strict'
 
-function transformContainers (inputValues, inputChart) {
+const fp = require('lodash/fp')
+
+function transformContainers (inputValues, inputChart, scope = '') {
+  const valuesPrefix = scope ? `.${scope}` : ''
   const values = Object.assign({}, inputValues)
   const chart = Object.assign({}, inputChart)
 
-  chart.spec.template.spec.containers = chart.spec.template.spec.containers.map((container) => {
+  chart.spec.containers = chart.spec.containers.map((container) => {
+    const containerName = fp.camelCase(container.name)
+
     values.containers = values.containers || {}
-    values.containers[container.name] = values.containers[container.name] || {}
-    const containerValues = values.containers[container.name]
+    values.containers[containerName] = values.containers[containerName] || {}
+    const containerValues = values.containers[containerName]
 
     // Image
     const tmp = container.image.split(':')
@@ -17,8 +22,8 @@ function transformContainers (inputValues, inputChart) {
     containerValues.image = image
     containerValues.imageTag = imageTag
 
-    container.image = `{{ .Values.containers.${container.name}.image }}:`
-       + `{{ .Values.containers.${container.name}.imageTag }}`
+    container.image = `{{ .Values${valuesPrefix}.containers.${containerName}.image }}:`
+       + `{{ .Values${valuesPrefix}.containers.${containerName}.imageTag }}`
 
     // Environment variables
     if (container.env) {
@@ -31,7 +36,7 @@ function transformContainers (inputValues, inputChart) {
         containerValues.env[env.name] = env.value
 
         return Object.assign({}, env, {
-          value: `{{ .Values.containers.${container.name}.env.${env.name} }}`
+          value: `{{ .Values${valuesPrefix}.containers.${containerName}.env.${env.name} }}`
         })
       })
     }
@@ -41,26 +46,26 @@ function transformContainers (inputValues, inputChart) {
       if (container.resources.limits) {
         if (container.resources.limits.cpu) {
           containerValues.resourcesLimitsCPU = container.resources.limits.cpu
-          container.resources.limits.cpu = `{{ .Values.containers.${container.name}.resources.limits.cpu`
-            + ` | default ${container.resources.limits.cpu} }}`
+          container.resources.limits.cpu = `{{ .Values${valuesPrefix}.containers.${containerName}`
+            + `.resources.limits.cpu | default ${container.resources.limits.cpu} }}`
         }
         if (container.resources.limits.memory) {
           containerValues.resourcesLimitsMemory = container.resources.limits.memory
-          container.resources.limits.memory = `{{ .Values.containers.${container.name}.resources.limits.memory`
-            + ` | default ${container.resources.limits.memory} }}`
+          container.resources.limits.memory = `{{ .Values${valuesPrefix}.containers.${containerName}`
+            + `.resources.limits.memory | default ${container.resources.limits.memory} }}`
         }
       }
 
       if (container.resources.requests) {
         if (container.resources.requests.cpu) {
           containerValues.resourcesRequestsCPU = container.resources.requests.cpu
-          container.resources.requests.cpu = `{{ .Values.containers.${container.name}.resources.requests.cpu`
-            + ` | default ${container.resources.requests.cpu} }}`
+          container.resources.requests.cpu = `{{ .Values${valuesPrefix}.containers.${containerName}`
+            + `.resources.requests.cpu | default ${container.resources.requests.cpu} }}`
         }
         if (container.resources.requests.memory) {
           containerValues.resourcesRequestsMemory = container.resources.requests.memory
-          container.resources.requests.memory = `{{ .Values.containers.${container.name}.resources.requests.memory`
-            + ` | default ${container.resources.requests.memory} }}`
+          container.resources.requests.memory = `{{ .Values${valuesPrefix}.containers.${containerName}`
+            + `.resources.requests.memory | default ${container.resources.requests.memory} }}`
         }
       }
     }
@@ -74,8 +79,8 @@ function transformContainers (inputValues, inputChart) {
   }
 }
 
-function transform (inputValues, inputChart) {
-  const containers = transformContainers(inputValues, inputChart)
+function transform (inputValues, inputChart, scope = '') {
+  const containers = transformContainers(inputValues, inputChart, scope)
   const values = Object.assign({}, containers.values)
   const chart = Object.assign({}, containers.chart)
 

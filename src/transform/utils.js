@@ -1,8 +1,8 @@
 'use strict'
 
-function transformToChart (transformers, inputChart) {
+function toChart (transformers, inputChart, scope = '') {
   const result = transformers.reduce((result, transformer) => {
-    const transformResult = transformer(result.values, result.chart)
+    const transformResult = transformer(result.values, result.chart, scope)
 
     const values = Object.assign(result.values, transformResult.values)
     const chart = Object.assign(result.chart, transformResult.chart)
@@ -17,5 +17,5 @@ function transformToChart (transformers, inputChart) {
 }
 
 module.exports = {
-  transformToChart
+  toChart
 }

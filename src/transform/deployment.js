@@ -1,12 +1,27 @@
 'use strict'
 
-function transform (inputValues, inputChart) {
-  const values = Object.assign({}, inputValues)
-  const chart = Object.assign({}, inputChart)
+const fp = require('lodash/fp')
+const podTransform = require('./pod')
 
+function transform (inputValues, inputChart, scope) {
+  const valuesPrefix = scope ? `.${scope}` : ''
+  let values = Object.assign({}, inputValues)
+  let chart = Object.assign({}, inputChart)
+
+  // Pod
+  const deploymentPod = podTransform(inputValues, inputChart.spec.template, scope)
+
+  values = fp.merge(values)(deploymentPod.values)
+  chart = fp.merge(chart)({
+    spec: {
+      template: deploymentPod.chart
+    }
+  })
+
+  // Replicas
   if (chart.spec.replicas) {
     values.replicas = chart.spec.replicas
-    chart.spec.replicas = `{{ .Values.replicas | default ${values.replicas} }}`
+    chart.spec.replicas = `{{ .Values${valuesPrefix}.replicas | default ${values.replicas} }}`
   }
 
   delete chart.status

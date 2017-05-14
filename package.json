@@ -19,6 +19,7 @@
   "homepage": "https://github.com/RisingStack/helm-backup#readme",
   "dependencies": {
     "js-yaml": "3.8.4",
+    "lodash": "4.17.4",
     "rimraf": "2.6.1"
   },
   "devDependencies": {
