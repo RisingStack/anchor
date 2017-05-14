@@ -55,6 +55,38 @@ Check out `./output` folder.
  - Ingress
  - Job
 
+## Output
+
+The `./output` directory will contains the templates under the `./output/templates` folder.  
+Your `Values.yaml` file will look like the following:
+
+```yaml
+deploymentMyApp:
+  image: my-company/my-app
+  imageTag: 1f40c1f
+  envLogLevel: info
+  resourcesLimitsCPU: 150m
+  resourcesLimitsMemory: 1536Mi
+  resourcesRequestsCPU: 10m
+  resourcesRequestsMemory: 128Mi
+  replicas: 2
+deploymentMyWorker:
+  containers:
+    myWorker:
+      image: my-company/my-worker
+      imageTag: 295a9c2
+      envLogLevel: warning
+      envTraceServiceName: my-worker
+      resourcesLimitsCPU: 200m
+      resourcesLimitsMemory: 1536Mi
+      resourcesRequestsCPU: 20m
+      resourcesRequestsMemory: 128Mi
+    mySidecar:
+      image: my-company/metrics-exporter
+      imageTag: aa1c434
+  replicas: 2
+```
+
 ## Future ideas:
 
 - Versioning
