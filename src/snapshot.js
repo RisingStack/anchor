@@ -5,7 +5,7 @@ const kubernetes = require('./kubernetes')
 const transform = require('./transform')
 const chart = require('./chart')
 
-function backup ({
+function snapshot ({
   overwrite = false,
   outputPath,
   name,
@@ -62,4 +62,4 @@ function backup ({
     })
 }
 
-module.exports = backup
+module.exports = snapshot

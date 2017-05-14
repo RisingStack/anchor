@@ -1,7 +1,7 @@
 'use strict'
 
-const backup = require('./backup')
+const snapshot = require('./snapshot')
 
 module.exports = {
-  backup
+  snapshot
 }

@@ -23,23 +23,23 @@ For more detailed examples check out `./example` folder.
 ```js
 const anchor = require('@risingstack/anchor')
 
-anchor.backup({
+anchor.snapshot({
   resources: [
     'deployment/my-app',
     'deployment/my-worker'
   ]
 })
-  .then(() => console.log('Backup finished'))
-  .catch((err) => console.error('Backup error', err))
+  .then(() => console.log('Snapshot finished'))
+  .catch((err) => console.error('Snapshot error', err))
 ```
 
 ## API
 
-### anchor.backup(options)
+### anchor.snapshot(options)
 
 Backup Kubernetes resources as a Helm chart and returns a `Promise`.
 
-- `options.resources`: Kubernetes resources to backup
+- `options.resources`: Kubernetes resources to snapshot
   - **required**
   - example: `['deployment/my-app', 'deployment/my-worker']`
 - `options.namespace`: Kubernetes namespace for `kubectl`
@@ -120,4 +120,4 @@ deploymentMyWorker:
 - Versioning
 - Snapshot reload by date
 - Resource grouping *(sub-charts)*
-- Auto-sync *(auto backup)*
+- Auto-sync *(auto snapshot)*
