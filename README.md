@@ -1,9 +1,9 @@
-# helm-backup
+# Anchor
 
-Creates Helm chart from running Kubernetes resources.  
-Detect and separates configurable values from templates.
+Creates Kubernetes backup as a Helm chart.  
+Extract configurations from resources and save them as values and templates in a reproducible [Helm](https://github.com/kubernetes/helm) chart.
 
-![helm-backup](https://cloud.githubusercontent.com/assets/1764512/26036522/775a4ef2-38df-11e7-8ee0-a45e70578495.png)
+![Anchor - Kubernetes backup](https://cloud.githubusercontent.com/assets/1764512/26036522/775a4ef2-38df-11e7-8ee0-a45e70578495.png)
 
 ## How to use it?
 
@@ -13,7 +13,7 @@ Detect and separates configurable values from templates.
 - kubectl
 
 ```sh
-npm install @risingstack/helm-backup
+npm install @risingstack/anchor
 ```
 
 ### Example
@@ -21,9 +21,9 @@ npm install @risingstack/helm-backup
 For more detailed examples check out `./example` folder.
 
 ```js
-const helmBackup = require('@risingstack/helm-backup')
+const anchor = require('@risingstack/anchor')
 
-helmBackup.backup({
+anchor.backup({
   resources: [
     'deployment/my-app',
     'deployment/my-worker'
@@ -35,7 +35,7 @@ helmBackup.backup({
 
 ## API
 
-### helmBackup.backup(options)
+### anchor.backup(options)
 
 Backup Kubernetes resources as a Helm chart and returns a `Promise`.
 

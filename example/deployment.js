@@ -1,8 +1,8 @@
 'use strict'
 
-const helmBackup = require('../src')
+const anchor = require('../src')
 
-helmBackup.backup({
+anchor.backup({
   overwrite: true,
   name: 'my-chart',
   description: 'Backup of my-chart',

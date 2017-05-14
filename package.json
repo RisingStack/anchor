@@ -1,5 +1,5 @@
 {
-  "name": "helm-backup",
+  "name": "anchor",
   "version": "1.0.0",
   "description": "Creates Helm chart from Kubernetes resources.",
   "main": "src/index.js",
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/RisingStack/helm-backup.git"
+    "url": "git+https://github.com/RisingStack/anchor.git"
   },
   "author": "RisingStack, Inc.",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/RisingStack/helm-backup/issues"
+    "url": "https://github.com/RisingStack/anchor/issues"
   },
-  "homepage": "https://github.com/RisingStack/helm-backup#readme",
+  "homepage": "https://github.com/RisingStack/anchor#readme",
   "dependencies": {
     "js-yaml": "3.8.4",
     "lodash": "4.17.4",
