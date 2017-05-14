@@ -1,8 +1,8 @@
 {
   "name": "helm-backup",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Creates Helm chart from Kubernetes resources.",
+  "main": "src/index.js",
   "scripts": {
     "test": "mocha test/setup.js 'src/**/*.spec.js'",
     "lint": "eslint test src"
@@ -11,8 +11,8 @@
     "type": "git",
     "url": "git+https://github.com/RisingStack/helm-backup.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "RisingStack, Inc.",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/RisingStack/helm-backup/issues"
   },
@@ -30,11 +30,13 @@
     "mocha": "3.2.0",
     "pre-commit": "1.2.2",
     "sinon": "2.1.0",
-    "sinon-chai": "2.9.0",
-    "winston": "2.3.1"
+    "sinon-chai": "2.9.0"
   },
   "pre-commit": [
     "lint",
     "test"
-  ]
+  ],
+  "engines": {
+    "node": ">=6.0.0"
+  }
 }
