@@ -115,7 +115,7 @@ deploymentMyWorker:
   replicas: 2
 ```
 
-## Future ideas:
+## Feature ideas:
 
 - Versioning
 - Snapshot reload by date
