@@ -31,9 +31,9 @@ helmBackup.backup({
   .catch((err) => console.error('Backup error', err))
 ```
 
-### API
+## API
 
-#### helmBackup.backup(options)
+### helmBackup.backup(options)
 
 Backup Kubernetes resources as a Helm chart and returns a `Promise`.
 
