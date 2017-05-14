@@ -3,6 +3,8 @@
 Creates Helm chart from running Kubernetes resources.  
 Detect and separates configurable values from templates.
 
+![helm-backup](https://cloud.githubusercontent.com/assets/1764512/26036522/775a4ef2-38df-11e7-8ee0-a45e70578495.png)
+
 ## How to use it?
 
 ### Requirements
@@ -37,7 +39,7 @@ helmBackup.backup({
 
 Backup Kubernetes resources as a Helm chart and returns a `Promise`.
 
-- `resources`: Kubernetes resources to backup
+- `options.resources`: Kubernetes resources to backup
   - **required**
   - example: `['deployment/my-app', 'deployment/my-worker']`
 - `options.namespace`: Kubernetes namespace for `kubectl`
