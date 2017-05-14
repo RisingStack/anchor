@@ -37,27 +37,27 @@ helmBackup.backup({
 
 Backup Kubernetes resources as a Helm chart and returns a `Promise`.
 
-- `options.overwrite`: overwrite output directory
-  - optional
-  - default: `false`
-- `options.outputPath`: defines chart path, throws error when exist but overwrite is `false`
-  - optional
-  - default: `./output`
+- `resources`: Kubernetes resources to backup
+  - **required**
+  - example: `['deployment/my-app', 'deployment/my-worker']`
+- `options.namespace`: Kubernetes namespace for `kubectl`
+  - *optional*
+  - default: `default`
 - `options.name`: name of the Helm chart
-  - optional
+  - *optional*
   - default: `my-chart`
 - `options.description`: description of the Helm chart
-  - optional
+  - *optional*
   - default: `''`
 - `options.version`: version of the Helm chart
-  - optional
+  - *optional*
   - default: `0.0.1`
-- `options.namespace`: Kubernetes namespace for `kubectl`
-  - optional
-  - default: `default`
-- `resources`: Kubernetes resources to backup
-  - required
-  - example: `['deployment/my-app', 'deployment/my-worker']`
+- `options.overwrite`: overwrite output directory
+  - *optional*
+  - default: `false`
+- `options.outputPath`: defines chart path, throws error when exist but overwrite is `false`
+  - *optional*
+  - default: `./output`
 
 ## How does it work?
 
