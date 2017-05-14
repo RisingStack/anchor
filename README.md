@@ -17,13 +17,16 @@ npm install @risingstack/helm-backup
 ```js
 const helmBackup = require('@risingstack/helm-backup')
 
-const NAMESPACE = 'staging'
-const RESOURCES_TO_BACKUP = [
-  'deployment/access-web',
-  'deployment/security-worker'
-]
-
-helmBackup.backup(NAMESPACE, RESOURCES_TO_BACKUP)
+helmBackup.backup({
+  name: 'my-chart',
+  description: 'Backup of my-chart',
+  version: '1.0.0',
+  namespace: 'staging',
+  resources: [
+    'deployment/access-web',
+    'deployment/security-worker'
+  ]
+})
   .then(() => console.log('Backup finished'))
   .catch((err) => console.error('Backup error', err))
 ```

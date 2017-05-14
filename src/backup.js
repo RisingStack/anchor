@@ -1,63 +1,29 @@
 'use strict'
 
-const path = require('path')
-const fs = require('fs')
-const rimraf = require('rimraf')
 const fp = require('lodash/fp')
-const transform = require('./transform')
 const kubernetes = require('./kubernetes')
-const { toYAML } = require('./yaml')
+const transform = require('./transform')
+const chart = require('./chart')
 
-const OUTPUT = '../output'
-
-function initChart () {
-  const outputPath = path.join(__dirname, OUTPUT)
-  const outputTemplatePath = path.join(outputPath, 'templates')
-  const fileName = path.join(outputPath, 'Chart.yaml')
-  const chart = {
-    apiVersion: 'v1',
-    description: 'Backup of my-chart',
-    name: 'my-chart',
-    version: '0.1.0'
-  }
-
-  // Recreate folder
-  rimraf.sync(outputPath)
-  fs.mkdirSync(outputPath)
-  fs.mkdirSync(outputTemplatePath)
-
-  const output = toYAML(chart)
-  return saveToFile(fileName, output)
-}
-
-function saveTemplate (chartResource) {
-  const fileName = `templates/${chartResource.resourceType}-${chartResource.resourceName}.yaml`
-  const filePath = path.join(__dirname, OUTPUT, fileName)
-  const output = toYAML(chartResource.chart)
-  return saveToFile(filePath, output)
-}
-
-function saveValues (values) {
-  const filePath = path.join(__dirname, OUTPUT, 'values.yaml')
-  const output = toYAML(values)
-  return saveToFile(filePath, output)
-}
-
-function saveToFile (filePath, output) {
-  fs.writeFileSync(filePath, output, 'utf-8')
-  return Promise.resolve()
-}
-
-function backup (namespace, resources) {
+function backup ({
+  outputPath,
+  name,
+  description,
+  version,
+  namespace,
+  resources
+}) {
   const getAndTransformResources = resources.map((resource) =>
     kubernetes.getResource(namespace, resource)
       .then((data) => {
         const resourceTmp = resource.split('/')
         const resourceType = resourceTmp[0]
         const resourceName = resourceTmp[1]
-        const scope = fp.camelCase(resourceName)
+        const scope = fp.camelCase(resource)
         const resourceTransformer = transform[resourceType] || transform.noop
-        const output = transform.toChart([resourceTransformer], data, scope)
+        const chart = transform.toChart([resourceTransformer], data, scope)
+        // FIXME: workaround to skip undefined values
+        const output = JSON.parse(JSON.stringify(chart))
 
         return Promise.resolve(Object.assign(output, {
           resource,
@@ -69,22 +35,29 @@ function backup (namespace, resources) {
   )
 
   return Promise.all(getAndTransformResources)
-    .then((chartResources) => initChart()
+    .then((chartResources) => chart.init(outputPath, { name, description, version })
       .then(() => chartResources)
     )
     .then((chartResources) => {
       const values = chartResources.reduce((values, chartResource) =>
-        Object.assign(values, { [chartResource.scope]: chartResource.values })
+        // Support both scoped and unscoped values (sub-charts)
+        Object.assign(values, chartResource.scope
+          ? {
+            [chartResource.scope]: chartResource.values
+          }
+          : chartResource.values
+        )
       , {})
 
       const saveTemplates = chartResources.map((chartResource) =>
-        saveTemplate(chartResource)
+        chart.saveTemplate(outputPath, chartResource)
       )
 
       return Promise.all([
-        saveValues(values),
+        chart.saveValues(outputPath, values),
         saveTemplates
       ])
+      .then(() => chartResources)
     })
 }
 

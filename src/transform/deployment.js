@@ -24,10 +24,10 @@ function transform (inputValues, inputChart, scope) {
     chart.spec.replicas = `{{ .Values${valuesPrefix}.replicas | default ${values.replicas} }}`
   }
 
-  delete chart.status
-  delete chart.metadata.selfLink
-  delete chart.metadata.creationTimestamp
-  delete chart.spec.template.metadata.creationTimestamp
+  chart.status = undefined
+  chart.metadata.selfLink = undefined
+  chart.metadata.creationTimestamp = undefined
+  chart.spec.template.metadata.creationTimestamp = undefined
 
   return {
     values,

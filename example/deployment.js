@@ -2,12 +2,20 @@
 
 const helmBackup = require('../src')
 
-const NAMESPACE = 'staging'
-const RESOURCES_TO_BACKUP = [
-  'deployment/access-web',
-  'deployment/security-worker'
-]
-
-helmBackup.backup(NAMESPACE, RESOURCES_TO_BACKUP)
-  .then(() => console.info('Backup finished'))
+helmBackup.backup({
+  name: 'my-chart',
+  description: 'Backup of my-chart',
+  version: '1.0.0',
+  namespace: 'staging',
+  resources: [
+    'deployment/access-web',
+    'deployment/security-worker'
+  ]
+})
+  .then((chartResources) => {
+    const resourceNames = chartResources.map((chartResource) => chartResource.resource)
+    // eslint-disable-next-line no-console
+    console.info(`Backup finished for: ${resourceNames.join(', ')}`)
+  })
+  // eslint-disable-next-line no-console
   .catch((err) => console.error('Backup error', err))

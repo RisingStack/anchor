@@ -7,7 +7,14 @@ function getResource (namespace, resource) {
   const output = childProcess.execSync(
     `kubectl --namespace=${namespace} get ${resource} --output=json --export`
   )
-  const data = JSON.parse(output)
+  let data
+
+  try {
+    data = JSON.parse(output)
+  } catch (err) {
+    return Promise.reject(err)
+  }
+
   return Promise.resolve(data)
 }
 

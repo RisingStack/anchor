@@ -3,16 +3,26 @@
 const fp = require('lodash/fp')
 
 function transformContainers (inputValues, inputChart, scope = '') {
-  const valuesPrefix = scope ? `.${scope}` : ''
+  const valuesPrefix = scope ? `.Values.${scope}` : '.Values'
   const values = Object.assign({}, inputValues)
   const chart = Object.assign({}, inputChart)
 
   chart.spec.containers = chart.spec.containers.map((container) => {
     const containerName = fp.camelCase(container.name)
+    let templateValuePathPrefix
+    let containerValues
 
-    values.containers = values.containers || {}
-    values.containers[containerName] = values.containers[containerName] || {}
-    const containerValues = values.containers[containerName]
+    // Simplify with one container
+    if (chart.spec.containers.length > 1) {
+      templateValuePathPrefix = `${valuesPrefix}.containers.${containerName}`
+
+      values.containers = values.containers || {}
+      values.containers[containerName] = values.containers[containerName] || {}
+      containerValues = values.containers[containerName]
+    } else {
+      templateValuePathPrefix = `${valuesPrefix}`
+      containerValues = values
+    }
 
     // Image
     const tmp = container.image.split(':')
@@ -22,8 +32,8 @@ function transformContainers (inputValues, inputChart, scope = '') {
     containerValues.image = image
     containerValues.imageTag = imageTag
 
-    container.image = `{{ .Values${valuesPrefix}.containers.${containerName}.image }}:`
-       + `{{ .Values${valuesPrefix}.containers.${containerName}.imageTag }}`
+    container.image = `{{ ${templateValuePathPrefix}.image }}:`
+       + `{{ ${templateValuePathPrefix}.imageTag }}`
 
     // Environment variables
     if (container.env) {
@@ -32,11 +42,12 @@ function transformContainers (inputValues, inputChart, scope = '') {
           return env
         }
 
-        containerValues.env = containerValues.env || {}
-        containerValues.env[env.name] = env.value
+        const envName = fp.camelCase(`env_${env.name}`)
+
+        containerValues[envName] = env.value
 
         return Object.assign({}, env, {
-          value: `{{ .Values${valuesPrefix}.containers.${containerName}.env.${env.name} }}`
+          value: `{{ ${templateValuePathPrefix}.${envName} }}`
         })
       })
     }
@@ -46,26 +57,26 @@ function transformContainers (inputValues, inputChart, scope = '') {
       if (container.resources.limits) {
         if (container.resources.limits.cpu) {
           containerValues.resourcesLimitsCPU = container.resources.limits.cpu
-          container.resources.limits.cpu = `{{ .Values${valuesPrefix}.containers.${containerName}`
-            + `.resources.limits.cpu | default ${container.resources.limits.cpu} }}`
+          container.resources.limits.cpu = `{{ ${templateValuePathPrefix}`
+            + `.resourcesLimitsCPU | default ${container.resources.limits.cpu} }}`
         }
         if (container.resources.limits.memory) {
           containerValues.resourcesLimitsMemory = container.resources.limits.memory
-          container.resources.limits.memory = `{{ .Values${valuesPrefix}.containers.${containerName}`
-            + `.resources.limits.memory | default ${container.resources.limits.memory} }}`
+          container.resources.limits.memory = `{{ ${templateValuePathPrefix}`
+            + `.resourcesLimitsMemory | default ${container.resources.limits.memory} }}`
         }
       }
 
       if (container.resources.requests) {
         if (container.resources.requests.cpu) {
           containerValues.resourcesRequestsCPU = container.resources.requests.cpu
-          container.resources.requests.cpu = `{{ .Values${valuesPrefix}.containers.${containerName}`
-            + `.resources.requests.cpu | default ${container.resources.requests.cpu} }}`
+          container.resources.requests.cpu = `{{ ${templateValuePathPrefix}`
+            + `.resourcesRequestsCPU | default ${container.resources.requests.cpu} }}`
         }
         if (container.resources.requests.memory) {
           containerValues.resourcesRequestsMemory = container.resources.requests.memory
-          container.resources.requests.memory = `{{ .Values${valuesPrefix}.containers.${containerName}`
-            + `.resources.requests.memory | default ${container.resources.requests.memory} }}`
+          container.resources.requests.memory = `{{ ${templateValuePathPrefix}`
+            + `.resourcesRequestsMemory | default ${container.resources.requests.memory} }}`
         }
       }
     }

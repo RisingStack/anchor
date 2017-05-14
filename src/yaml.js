@@ -9,7 +9,7 @@ function toYAML (data) {
   return fixYAML(output)
 }
 
-// Remove unnecessary qoutes
+// Remove unnecessary quotes
 function fixYAML (str) {
   return str
     .replace(/'{{/g, '{{')
