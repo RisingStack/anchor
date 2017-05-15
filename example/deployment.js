@@ -2,6 +2,13 @@
 
 const anchor = require('../src')
 
+/*
+* In this example we create a snapshot from our resources.
+*
+* "Security" is our imaginary application group: with one service, one secret and two deployments.
+* Our resources are: service/security, ssecret/ecurity-pg, deployment/security-web and deployment/security-worker
+*/
+
 anchor.snapshot({
   overwrite: true,
   name: 'my-chart',

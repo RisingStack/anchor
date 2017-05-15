@@ -3,6 +3,7 @@
 const path = require('path')
 const fs = require('fs')
 const rimraf = require('rimraf')
+const mkdirp = require('mkdirp')
 const { toYAML } = require('./yaml')
 
 const DEFAULT_OUTPUT_PATH = path.join(__dirname, '../output')
@@ -26,9 +27,9 @@ function init ({
   // Recreate folder
   if (overwrite) {
     rimraf.sync(outputPath)
-    fs.mkdirSync(outputPath)
+    mkdirp.sync(outputPath)
   }
-  fs.mkdirSync(outputTemplatePath)
+  mkdirp.sync(outputTemplatePath)
 
   return saveToYAMLFile(filePath, chart)
 }
