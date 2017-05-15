@@ -73,11 +73,11 @@ Backup Kubernetes resources as a Helm chart and returns a `Promise`.
 - Container environment variables with value
 - Container image with tag
 - Deployment replicas
+- Secret data
+- Service type
 
 **TODO:**
 
- - Secret
- - Service
  - ConfigMap
  - PVC
  - Ingress

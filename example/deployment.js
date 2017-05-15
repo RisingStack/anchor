@@ -10,7 +10,9 @@ anchor.snapshot({
   namespace: 'staging',
   resources: [
     'deployment/access-web',
-    'deployment/security-worker'
+    'deployment/security-worker',
+    'secret/security-pg',
+    'service/security'
   ]
 })
   .then((chartResources) => {
