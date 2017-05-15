@@ -18,7 +18,7 @@ npm install @risingstack/anchor
 
 ### Example
 
-For more detailed examples check out `./example` folder.
+For more detailed examples like sub-charts check out the `./example` folder.
 
 ```js
 const anchor = require('@risingstack/anchor')
@@ -119,5 +119,4 @@ deploymentMyWorker:
 
 - Versioning
 - Snapshot reload by date
-- Resource grouping *(sub-charts)*
 - Auto-sync *(auto snapshot)*
