@@ -30,10 +30,10 @@ function transformContainers (inputValues, inputChart, scope = '') {
     const imageTag = tmp[1]
 
     containerValues.image = image
-    containerValues.imageTag = imageTag
+    containerValues.imageTag = imageTag.toString()  // prevent casting to Number
 
-    container.image = `{{ ${templateValuePathPrefix}.image }}:`
-       + `{{ ${templateValuePathPrefix}.imageTag }}`
+    container.image = `"{{ ${templateValuePathPrefix}.image }}:`
+       + `{{ ${templateValuePathPrefix}.imageTag }}"`
 
     // Environment variables
     if (container.env) {
@@ -47,7 +47,7 @@ function transformContainers (inputValues, inputChart, scope = '') {
         containerValues[envName] = env.value
 
         return Object.assign({}, env, {
-          value: `{{ ${templateValuePathPrefix}.${envName} }}`
+          value: `{{ ${templateValuePathPrefix}.${envName} | quote }}`
         })
       })
     }
@@ -58,12 +58,12 @@ function transformContainers (inputValues, inputChart, scope = '') {
         if (container.resources.limits.cpu) {
           containerValues.resourcesLimitsCPU = container.resources.limits.cpu
           container.resources.limits.cpu = `{{ ${templateValuePathPrefix}`
-            + `.resourcesLimitsCPU | default ${container.resources.limits.cpu} }}`
+            + `.resourcesLimitsCPU | default "${container.resources.limits.cpu}" }}`
         }
         if (container.resources.limits.memory) {
           containerValues.resourcesLimitsMemory = container.resources.limits.memory
           container.resources.limits.memory = `{{ ${templateValuePathPrefix}`
-            + `.resourcesLimitsMemory | default ${container.resources.limits.memory} }}`
+            + `.resourcesLimitsMemory | default "${container.resources.limits.memory}" }}`
         }
       }
 
@@ -71,12 +71,12 @@ function transformContainers (inputValues, inputChart, scope = '') {
         if (container.resources.requests.cpu) {
           containerValues.resourcesRequestsCPU = container.resources.requests.cpu
           container.resources.requests.cpu = `{{ ${templateValuePathPrefix}`
-            + `.resourcesRequestsCPU | default ${container.resources.requests.cpu} }}`
+            + `.resourcesRequestsCPU | default "${container.resources.requests.cpu}" }}`
         }
         if (container.resources.requests.memory) {
           containerValues.resourcesRequestsMemory = container.resources.requests.memory
           container.resources.requests.memory = `{{ ${templateValuePathPrefix}`
-            + `.resourcesRequestsMemory | default ${container.resources.requests.memory} }}`
+            + `.resourcesRequestsMemory | default "${container.resources.requests.memory}" }}`
         }
       }
     }

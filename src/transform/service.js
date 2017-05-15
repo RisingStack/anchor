@@ -6,7 +6,7 @@ function transform (inputValues, inputChart, scope) {
   const chart = Object.assign({}, inputChart)
 
   values.type = chart.spec.type
-  chart.spec.type = `{{ .Values${valuesPrefix}.type | default ${values.type} }}`
+  chart.spec.type = `{{ .Values${valuesPrefix}.type | default "${values.type}" }}`
 
   chart.metadata.selfLink = undefined
   chart.metadata.creationTimestamp = undefined
