@@ -1,5 +1,5 @@
 {
-  "name": "anchor",
+  "name": "@risingstack/anchor",
   "version": "1.0.0",
   "description": "Creates Helm chart from Kubernetes resources.",
   "main": "src/index.js",
