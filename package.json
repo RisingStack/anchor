@@ -1,7 +1,7 @@
 {
   "name": "@risingstack/anchor",
-  "version": "1.0.0",
-  "description": "Creates Helm chart from Kubernetes resources.",
+  "version": "1.0.1",
+  "description": "Creates Helm charts from Kubernetes resources.",
   "main": "src/index.js",
   "scripts": {
     "test": "mocha test/setup.js 'src/**/*.spec.js'",
@@ -11,6 +11,13 @@
     "type": "git",
     "url": "git+https://github.com/RisingStack/anchor.git"
   },
+  "keywords": [
+    "kubernetes",
+    "k8s",
+    "helm",
+    "helm chart",
+    "backup"
+  ],
   "author": "RisingStack, Inc.",
   "license": "MIT",
   "bugs": {
@@ -31,7 +38,7 @@
     "eslint-plugin-promise": "3.5.0",
     "mocha": "3.4.1",
     "pre-commit": "1.2.2",
-    "sinon": "2.2.0",
+    "sinon": "2.3.0",
     "sinon-chai": "2.10.0"
   },
   "pre-commit": [
