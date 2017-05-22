@@ -1,7 +1,7 @@
 'use strict'
 
 const fp = require('lodash/fp')
-const podTransform = require('./pod')
+const pod = require('./pod')
 
 function transform (inputValues, inputChart, scope) {
   const valuesPrefix = scope ? `.${scope}` : ''
@@ -9,7 +9,7 @@ function transform (inputValues, inputChart, scope) {
   let chart = Object.assign({}, inputChart)
 
   // Pod
-  const deploymentPod = podTransform(inputValues, inputChart.spec.template, scope)
+  const deploymentPod = pod.transform(inputValues, inputChart.spec.template, scope)
 
   values = fp.merge(values)(deploymentPod.values)
   chart = fp.merge(chart)({
@@ -27,7 +27,6 @@ function transform (inputValues, inputChart, scope) {
   chart.status = undefined
   chart.metadata.selfLink = undefined
   chart.metadata.creationTimestamp = undefined
-  chart.spec.template.metadata.creationTimestamp = undefined
 
   return {
     values,
@@ -36,3 +35,4 @@ function transform (inputValues, inputChart, scope) {
 }
 
 module.exports = transform
+module.exports.transform = transform

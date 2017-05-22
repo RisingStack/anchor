@@ -84,6 +84,10 @@ function transformContainers (inputValues, inputChart, scope = '') {
     return container
   })
 
+  if (chart.metadata) {
+    chart.metadata.creationTimestamp = undefined
+  }
+
   return {
     values,
     chart
@@ -102,3 +106,4 @@ function transform (inputValues, inputChart, scope = '') {
 }
 
 module.exports = transform
+module.exports.transform = transform
