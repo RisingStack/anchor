@@ -7,8 +7,8 @@ function transformContainers (inputValues, inputChart, scope = '') {
   const values = Object.assign({}, inputValues)
   const chart = Object.assign({}, inputChart)
 
-  chart.spec.containers = chart.spec.containers.map((container) => {
-    const containerName = fp.camelCase(container.name)
+  chart.spec.containers = chart.spec.containers.map((container, key) => {
+    const containerName = fp.camelCase(container.name) || key.toString()
     let templateValuePathPrefix
     let containerValues
 
