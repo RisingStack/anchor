@@ -190,8 +190,8 @@ describe('Transform Pod', () => {
     })
   })
 
-  describe('meta and status', () => {
-    it('should cleanup meta and status', () => {
+  describe('meta', () => {
+    it('should cleanup meta', () => {
       const { chart } = podTransform({}, podChart)
 
       expect(chart.metadata.creationTimestamp).to.be.equal(undefined)
