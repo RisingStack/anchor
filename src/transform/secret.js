@@ -11,7 +11,7 @@ function transform (inputValues, inputChart, scope) {
     const key = _.camelCase(dataKey)
 
     values[key] = new Buffer(dataValue, 'base64').toString('utf-8')
-    data[key] = `{{ .Values${valuesPrefix}.${key} | b64enc }}`
+    data[dataKey] = `{{ .Values${valuesPrefix}.${key} | b64enc }}`
 
     return data
   }, {})
