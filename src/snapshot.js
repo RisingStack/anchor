@@ -47,8 +47,7 @@ function snapshot ({
             [chartResource.scope]: chartResource.values
           }
           : chartResource.values
-        )
-      , {})
+        ), {})
 
       const saveTemplates = chartResources.map((chartResource) =>
         chart.saveTemplate(outputPath, chartResource)
@@ -58,7 +57,7 @@ function snapshot ({
         chart.saveValues(outputPath, values),
         saveTemplates
       ])
-      .then(() => chartResources)
+        .then(() => chartResources)
     })
 }
 

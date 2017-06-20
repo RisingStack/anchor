@@ -31,9 +31,10 @@ function transformContainers (inputValues, inputChart, scope = '') {
 
     containerValues.image = image
     if (imageTag) {
-      containerValues.imageTag = imageTag.toString()  // prevent casting to Number
+      // prevent casting to Number
+      containerValues.imageTag = imageTag.toString()
     }
-    
+
     container.image = `"{{ ${templateValuePathPrefix}.image }}:`
        + `{{ ${templateValuePathPrefix}.imageTag }}"`
 
