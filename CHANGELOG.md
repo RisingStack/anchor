@@ -1,3 +1,11 @@
+<a name="1.0.3"></a>
+## 1.0.3 (2017-06-20)
+
+* chore(package): update dependencies ([aaae29d](https://github.com/RisingStack/anchor/commit/aaae29d))
+* Update pod.js ([6df4552](https://github.com/RisingStack/anchor/commit/6df4552))
+
+
+
 <a name="1.0.2"></a>
 ## 1.0.2 (2017-05-23)
 
